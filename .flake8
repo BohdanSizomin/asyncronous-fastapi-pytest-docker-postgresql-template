@@ -1,0 +1,23 @@
+[flake8]
+max-line-length = 120
+per-file-ignores =
+    # imported but unused
+    __init__.py: F401
+max-complexity = 10
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    .vscode,
+    .idea,
+    .pytest_cache,
+    .mypy_cache,
+    .egg-info,
+    .tox,
+    .eggs,
+    *.egg,
+    */migrations/*,
+    */static/*,
+    */templates/*,
+    */tests/*,
+    */t

@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15.0
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    env_file:
+      - src/.env
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-password}
+      POSTGRES_DB: db
+      POSTGRES_USER: ${DATABASE_USERNAME:-postgres}
+      PGUSER: ${DATABASE_USERNAME:-postgres}
+      PGDATABASE: db
+      PGPASSWORD: ${DATABASE_PASSWORD:-password}
+    ports:
+      - 127.0.0.1:${DATABASE_LOCAL_PORT:-5432}:5432
+    restart: always
+
+  app:
+    build: .
+    restart: always
+    command: bash ./entrypoint.sh
+    env_file:
+      - src/.env
+    ports:
+      - 127.0.0.1:8008:80
+    depends_on:
+      - db
+
+volumes:
+  db_data:
