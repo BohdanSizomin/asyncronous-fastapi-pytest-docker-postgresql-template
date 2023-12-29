@@ -2,13 +2,11 @@
 
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
 from alembic import context
+from sqlalchemy import engine_from_config, pool
 
-from src.database import db
 from src.config import settings
+from src.database import db
 
 # importing models here is required for Alembic to detect them
 from src.users.models import User

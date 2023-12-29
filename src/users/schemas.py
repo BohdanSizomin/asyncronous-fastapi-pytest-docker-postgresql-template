@@ -8,7 +8,6 @@ class UserBase(BaseModel):
 # example for creating user
 class UserCreate(UserBase):
     password: str
-    username: str
 
 
 class UserOut(UserBase):
