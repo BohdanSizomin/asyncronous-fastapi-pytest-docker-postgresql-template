@@ -2,25 +2,26 @@ from functools import lru_cache
 from typing import Generator
 
 from alchemical.aio import Alchemical
-from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
+from sqlalchemy.pool import NullPool
 
 from .config import settings
 
 DATABASE_URL = (
-    settings.DATABASE_URL if settings.MODE != "TEST" else settings.TEST_DATABASE_URL
+    settings.DATABASE_URL
+    if settings.ENVIRONMENT != "TEST"
+    else settings.TEST_DATABASE_URL
 )
 
-db = Alchemical(
+db: Alchemical = Alchemical(
     settings.DATABASE_URL,
     session_options={
         "expire_on_commit": False,
         "autocommit": False,
         "autoflush": False,
     },
+    engine_options={"poolclass": NullPool} if settings.ENVIRONMENT == "TEST" else {},
 )
-if settings.MODE == "TEST":
-    db.session_options["poolclass"] = NullPool
 
 
 @lru_cache

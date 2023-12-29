@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 
-load_dotenv("tests/test.env")
+load_dotenv(dotenv_path="tests/test.env", verbose=True)
 
 
 pytest_plugins = [

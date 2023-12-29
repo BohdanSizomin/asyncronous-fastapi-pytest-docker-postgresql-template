@@ -31,6 +31,10 @@ class User(db.Model):
     hashed_password: orm.Mapped[str] = orm.mapped_column(
         sa.String,
     )
+    is_admin: orm.Mapped[bool] = orm.mapped_column(
+        sa.Boolean,
+        default=False,
+    )
 
     @property
     def password(self):

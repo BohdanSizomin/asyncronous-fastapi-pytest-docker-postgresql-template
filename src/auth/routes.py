@@ -27,7 +27,7 @@ async def signup(
     try:
         await db.commit()
     except Exception as e:
-        log(log.INFO, e)
+        log(log.INFO, "Error while signing up user: \n %s", e)
         raise UserCreationError
     return status.HTTP_201_CREATED
 

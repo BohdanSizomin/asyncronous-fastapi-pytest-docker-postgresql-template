@@ -6,22 +6,23 @@ from starlette.responses import RedirectResponse
 
 from src.auth.dependencies import get_current_user
 from src.auth.schemas import TokenData
-from src.auth.services import authenticate, create_access_token
+from src.auth.services import create_access_token
 from src.database import db
 from src.logger import log
+from src.users.models import User
 
 
 class AdminAuth(AuthenticationBackend):
     async def login(self, request: Request) -> bool:
         form = await request.form()
         email, password = form["username"], form["password"]
-
-        user = await authenticate(db, email, password)
-        if user:
+        async with db.Session() as async_session:
+            user = await User.authenticate(async_session, email, password)
+        if user and user.is_admin:
             access_token: str = create_access_token(TokenData(user_id=user.id))
             request.session.update({"token": access_token})
-
-        return True
+            return True
+        return False
 
     async def logout(self, request: Request) -> bool:
         request.session.clear()

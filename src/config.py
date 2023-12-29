@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    MODE: Literal["DEV", "TEST", "PROD"] = "DEV"
+    ENVIRONMENT: Literal["DEV", "TEST", "PROD"] = "DEV"
     JWT_SECRET: str = "default_secret"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
     # DB
