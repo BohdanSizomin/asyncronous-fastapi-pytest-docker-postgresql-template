@@ -2,7 +2,6 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy.sql import select
 
-from src.database import db
 from src.users.models import User
 
 
