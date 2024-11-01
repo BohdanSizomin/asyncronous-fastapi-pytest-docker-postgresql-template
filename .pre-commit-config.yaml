@@ -5,29 +5,43 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
-      - id: check-added-large-files
-      - id: check-json
-      - id: check-xml
-      - id: check-case-conflict
       - id: check-merge-conflict
-      - id: check-symlinks
-      - id: debug-statements
-      - id: requirements-txt-fixer
-      - id: mixed-line-ending
-      - id: check-byte-order-marker
-      - id: check-executables-have-shebangs
-      - id: check-ast
-      - id: check-docstring-first
-      - id: check-vcs-permalinks
-
-  - repo: https://github.com/PyCQA/flake8
-    rev: 6.1.0
+      - id: detect-private-key
+      - id: pretty-format-json
+        args: [--autofix]
+  - repo: local
     hooks:
-      - id: flake8
-        args: [--max-line-length=120, --select=B, --ignore=E203, W503]
-
-  - repo: https://github.com/psf/black
-    rev: 23.12.1
-    hooks:
+      - id: ruff
+        name: ruff
+        entry: ruff check
+        args: [--fix, --no-cache]
+        language: system
+        types: [python]
       - id: black
-        language_version: python3.11
+        name: black
+        entry: black -l 100 .
+        language: python
+        language_version: python3.12
+        types_or: [python]
+      - id: mypy
+        name: mypy
+        entry: mypy --install-types --non-interactive .
+        pass_filenames: false
+        language: system
+        types: [python]
+      - id: tests
+        name: tests
+        entry: pytest
+        args:
+          [
+            "-n",
+            "auto",
+            "--cov=src/", # make sure to set root path for /tests folder
+            "--cov-fail-under=0",
+            "--cov-report=html",
+            "--no-cov-on-fail",
+            "--show-capture=all",
+          ]
+        pass_filenames: false
+        language: system
+        types: [python]
